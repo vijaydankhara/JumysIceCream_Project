@@ -3,6 +3,7 @@ export interface IUser{
     lastName?: string;
     gender?: string;
     email?: string;
+    dateOfBirth?: Date;
     password?: string;
     mobileNo?:number;
     isAdmin?: boolean;
