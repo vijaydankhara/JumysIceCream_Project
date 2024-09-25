@@ -8,6 +8,10 @@ const adminRouter: Router = Router();
 adminRouter.post("/register-admin",async (request: Request, response: Response) => {
     await adminController.registerAdmin(request, response);});
 
+    // Login ADMIN
+adminRouter.post("/login",async (request: Request, response: Response) => {
+    await adminController.loginAdmin(request, response);});
+
 
 
 

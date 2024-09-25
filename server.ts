@@ -2,8 +2,14 @@ import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import morgan from 'morgan';
 // npm install --save-dev @types/cors
+
+// Admin Router
 import adminRouter from './routes/admin/adminRouter';
+
+// User Router
+import userRouter from './routes/user/userRouter';
 
 dotenv.config();
 const server = express();
@@ -12,17 +18,17 @@ const dbURL = process.env.MONGO_DB_URL || 'your-default-db-url';
 
 // CORS configuration
 server.use(cors({
-    origin: 'http://localhost:5173',
-    methods: ['POST'],
     credentials: true 
 }));
 
-
+server.use(morgan('tiny'));
 server.use(express.json());
 
 /*====================> || ADMIN API || <====================*/
 server.use('/api/admin', adminRouter);
 
+/*====================> || ADMIN API || <====================*/
+server.use('/api/user', userRouter);
 
 
 

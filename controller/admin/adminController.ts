@@ -1,27 +1,23 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
-
+import jwt from 'jsonwebtoken'; 
 import AdminModel from "../../schemas/admin/adminSchema";
 import { IUser } from "../../models/IUser";
-import { ThrowError } from "../../utils/ErrorUtils";
 
 // REGISTER ADMIN
 export const registerAdmin = async (request: Request, response: Response) => {
   try {
-    const { firstName, lastName, gender, email, password, mobileNo,dateOfBirth } =
+    const { firstName, lastName, gender, email, password, mobileNo, dateOfBirth } =
       request.body;
-
     // Validate if all fields are provided
     if (!firstName || !lastName || !gender || !email || !password || !mobileNo || !dateOfBirth) {
       return response.status(400).json({ message: "All fields are required." });
     }
-
     // Check if admin already exists
-    let adminobj = await AdminModel.findOne({ email: email });
+    let adminobj = await AdminModel.findOne({ email: email }) as IUser;
     if (adminobj) {
       return response.status(409).json({ message: "Admin already exists." });
     }
-
     // Hash password
     const salt = await bcrypt.genSalt(11);
     const hashPassword = await bcrypt.hash(password, salt);
@@ -37,13 +33,59 @@ export const registerAdmin = async (request: Request, response: Response) => {
       password: hashPassword,
       isAdmin: true,
     };
-
-    let admin = await new AdminModel(newAdmin).save();
-    if (admin) {
-      return response.status(201).json({ message: "Registered successfully." });
-    }
+    adminobj = await AdminModel.create(newAdmin) as IUser;
+    return response.status(201).json({ message: "Registered successfully.", adminobj });
   } catch (error) {
-    return ThrowError(response);
+    console.log(error);
+    return response.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
+export const loginAdmin = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+    console.log("Body Data ====>",req.body);
+    
+// token  :-  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkI…TU1fQ.MjCRgnGQd-V0M5qAapJqvpRpLpfHgucjGEOQbiJVYBw'
+
+    // Find admin by email
+    let admin = await AdminModel.findOne({ email: email, isAdmin: true });
+    console.log("Admin Is Find ======>",admin);
+    
+    // Check if admin exists
+    if (!admin) {
+      return res.status(400).json({ message: "Invalid email and Password" });
+    }
+    
+    // Ensure password exists
+    if (!admin.password) {
+      return res.status(500).json({ message: "Admin has no password set." });
+    }
+    
+    // Check if password is valid
+    let checkPassword = await bcrypt.compare(password, admin.password);
+    if (!checkPassword) {
+      return res.status(401).json({ message: "Invalid Password" });
+    }
+
+    // Payload for JWT token
+    let payload = {
+      adminId: admin._id
+    };
+
+    // Get the secret key from environment variables
+    let SECRET_KEY: string | undefined = process.env.SECRETE_KEY;
+    
+    if (SECRET_KEY) {
+      // Sign the JWT token
+      let token = jwt.sign(payload, SECRET_KEY);
+      return res.status(200).json({ token, message: "Login successful" });
+    } else {
+      return res.status(500).json({ message: "SECRET_KEY is not defined in the environment variables." });
+    }
+    
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
