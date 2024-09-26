@@ -7,6 +7,7 @@ import morgan from 'morgan';
 
 // Admin Router
 import adminRouter from './routes/admin/adminRouter';
+import productRouter from './routes/admin/productRouter';
 
 // User Router
 import userRouter from './routes/user/userRouter';
@@ -26,6 +27,8 @@ server.use(express.json());
 
 /*====================> || ADMIN API || <====================*/
 server.use('/api/admin', adminRouter);
+server.use('/api/admin', productRouter);
+
 
 /*====================> || ADMIN API || <====================*/
 server.use('/api/user', userRouter);

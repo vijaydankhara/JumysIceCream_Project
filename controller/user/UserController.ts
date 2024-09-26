@@ -33,6 +33,7 @@ export const registerAdmin = async (request: Request, response: Response) => {
       gender: gender,
       mobileNo: mobileNo,
       password: hashPassword,
+      isAdmin: false
       
     };
     userobj = await UserModel.create(newUser) as IUser;

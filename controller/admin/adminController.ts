@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken'; 
-import AdminModel from "../../schemas/admin/adminSchema";
+import UserModel from "../../schemas/user/userSchema";
 import { IUser } from "../../models/IUser";
+
+
 
 // REGISTER ADMIN
 export const registerAdmin = async (request: Request, response: Response) => {
@@ -14,7 +16,7 @@ export const registerAdmin = async (request: Request, response: Response) => {
       return response.status(400).json({ message: "All fields are required." });
     }
     // Check if admin already exists
-    let adminobj = await AdminModel.findOne({ email: email }) as IUser;
+    let adminobj = await UserModel.findOne({ email: email }) as IUser;
     if (adminobj) {
       return response.status(409).json({ message: "Admin already exists." });
     }
@@ -31,9 +33,9 @@ export const registerAdmin = async (request: Request, response: Response) => {
       gender: gender,
       mobileNo: mobileNo,
       password: hashPassword,
-      isAdmin: true,
+      isAdmin: true
     };
-    adminobj = await AdminModel.create(newAdmin) as IUser;
+    adminobj = await UserModel.create(newAdmin) as IUser;
     return response.status(201).json({ message: "Registered successfully.", adminobj });
   } catch (error) {
     console.log(error);
@@ -46,10 +48,8 @@ export const loginAdmin = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     console.log("Body Data ====>",req.body);
     
-// token  :-  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkI…TU1fQ.MjCRgnGQd-V0M5qAapJqvpRpLpfHgucjGEOQbiJVYBw'
-
     // Find admin by email
-    let admin = await AdminModel.findOne({ email: email, isAdmin: true });
+    let admin = await UserModel.findOne({ email: email, isAdmin: true });
     console.log("Admin Is Find ======>",admin);
     
     // Check if admin exists
