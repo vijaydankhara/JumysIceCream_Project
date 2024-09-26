@@ -23,10 +23,12 @@ export const addNewProduct = async (req: Request, res: Response) => {
         const imagePath: string[] = [];
         const files: any[] = (req as any).files;
         files.forEach((file: any) => {
-            const path = file.path;
+            const path = file.path.replace(/^public/, '');
+            console.log({path});
             imagePath.push(path);
         });
         console.log(imagePath);
+        // res.status(500).json({ message: 'Internal Server Error' });
          
         product = await ProductModel.create({...req.body, productImage: imagePath });
         product.save();

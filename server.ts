@@ -9,6 +9,7 @@ import morgan from 'morgan';
 import adminRouter from './routes/admin/adminRouter';
 import productRouter from './routes/admin/productRouter';
 
+
 // User Router
 import userRouter from './routes/user/userRouter';
 
@@ -16,6 +17,8 @@ dotenv.config();
 const server = express();
 const port = process.env.PORT;
 const dbURL = process.env.MONGO_DB_URL || 'your-default-db-url';
+
+server.use(express.static('./public'));
 
 // CORS configuration
 server.use(cors({
