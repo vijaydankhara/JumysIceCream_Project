@@ -8,7 +8,7 @@ export interface IProduct {
   category: string;
   size: String[];
   color: String[];
-  isdelete?: boolean;
+  isDelete?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }

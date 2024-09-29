@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema<IProduct>({
     category: { type: String },
     size: [{ type: String }],
     color: [{ type: String }],    
-    isdelete: {type: Boolean,  default: false},
+    isDelete: {type: Boolean,  default: false},
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }
 },

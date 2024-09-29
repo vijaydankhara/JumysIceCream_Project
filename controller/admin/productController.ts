@@ -23,7 +23,7 @@ export const addNewProduct = async (req: Request, res: Response) => {
         const imagePath: string[] = [];
         const files: any[] = (req as any).files;
         files.forEach((file: any) => {
-            const path = file.path.replace(/^public/, '');
+            const path = file.path.replace(/\\/g, "/")
             console.log({path});
             imagePath.push(path);
         });
@@ -46,6 +46,38 @@ export const getAllProduct = async (req: Request, res: Response) => {
     try {
         let products = await ProductModel.find(req.query);
         res.status(200).json(products);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+
+// UPDATE PRODUCT
+export const updateProduct = async (req: Request, res: Response) => {
+    try {
+        let product = await ProductModel.findById(req.query.productId);
+        if (!product) {
+            return res.status(404).json({ message: 'Product is not found' });
+        }
+        product = await ProductModel.findByIdAndUpdate(product._id, { ...req.body });
+        res.status(202).json({ product, message: 'Product is updated' });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'Internal Server Error' });
+    }
+};
+
+
+// DELETE PRODUCT
+export const deleteProduct = async (req: Request, res: Response) => {
+    try {
+        let product = await ProductModel.findById(req.query.productId);
+        if (!product) {
+            return res.status(404).json({ message: 'Product is not found' });
+        }
+        product = await ProductModel.findByIdAndUpdate(product._id, { isdelete: true });
+        res.status(200).json({ product, message: 'Product is Deleted' });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'Internal Server Error' });

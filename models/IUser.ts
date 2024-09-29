@@ -7,7 +7,7 @@ export interface IUser{
     password?: string;
     mobileNo?:number;
     isAdmin?: boolean;
-    isdelete?: boolean;
+    isDelete?: boolean;
     createdAt?: Date;
     updatedAt?: Date;
 }

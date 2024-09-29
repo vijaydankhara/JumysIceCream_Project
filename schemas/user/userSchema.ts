@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema<IUser>({
   password: { type: String, required: true },
   mobileNo: { type: Number, required: true, unique: true },
   isAdmin: { type: Boolean, default: false },
-  isdelete: { type: Boolean, default: false },
+  isDelete: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 }, { versionKey: false });

@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken';
 import UserModel from "../../schemas/user/userSchema";
 import { IUser } from "../../models/IUser";
 
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkI…TI0fQ.8KmqSZlo6rYajjI29RRRNop4D7AkPLeWl0gQGiW6me0
 
 // REGISTER User
 export const registerAdmin = async (request: Request, response: Response) => {
@@ -51,7 +50,7 @@ export const loginAdmin = async (req: Request, res: Response) => {
     console.log("Body Data ====>",req.body);
     
     // Find user by email
-    let user = await UserModel.findOne({ email: email, isdelete: false });
+    let user = await UserModel.findOne({ email: email, isDelete: false });
     console.log("User Is Find ======>",user);
     
     // Check if user exists

@@ -12,13 +12,17 @@ import productRouter from './routes/admin/productRouter';
 
 // User Router
 import userRouter from './routes/user/userRouter';
+import userProductRouter from './routes/user/productRouter';
+
+
+
+
+import path from 'path';
 
 dotenv.config();
 const server = express();
 const port = process.env.PORT;
 const dbURL = process.env.MONGO_DB_URL || 'your-default-db-url';
-
-server.use(express.static('./public'));
 
 // CORS configuration
 server.use(cors({
@@ -27,6 +31,7 @@ server.use(cors({
 
 server.use(morgan('tiny'));
 server.use(express.json());
+server.use("/public/images", express.static(path.join(__dirname, 'public', 'images')));
 
 /*====================> || ADMIN API || <====================*/
 server.use('/api/admin', adminRouter);
@@ -35,6 +40,7 @@ server.use('/api/admin', productRouter);
 
 /*====================> || ADMIN API || <====================*/
 server.use('/api/user', userRouter);
+server.use('/api/user', userProductRouter);
 
 
 
