@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import CartModel from '../../schemas/user/cartSchema';
+import CartModel from '../../schemas/cartSchema';
 
 
 

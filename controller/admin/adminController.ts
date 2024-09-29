@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken'; 
-import UserModel from "../../schemas/user/userSchema";
+import UserModel from "../../schemas/userSchema";
 import { IUser } from "../../models/IUser";
 
 

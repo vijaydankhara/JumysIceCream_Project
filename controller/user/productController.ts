@@ -1,5 +1,5 @@
 import { Request, Response, response } from "express";
-import ProductModel from "../../schemas/admin/productSchema";
+import ProductModel from "../../schemas/productSchema";
 
 
 // GET ALL PRODUCT

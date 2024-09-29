@@ -8,12 +8,18 @@ import morgan from 'morgan';
 // Admin Router
 import adminRouter from './routes/admin/adminRouter';
 import productRouter from './routes/admin/productRouter';
+import adminreviewRouter from './routes/admin/reviewRouter';
+import adminorderRouter from './routes/admin/orderRouter';
 
 
 // User Router
 import userRouter from './routes/user/userRouter';
 import userProductRouter from './routes/user/productRouter';
 import userCartRouter from './routes/user/cartRouter';
+import userWhishlistRouter from './routes/user/wishlistRouter';
+import userReviewRouter from './routes/user/reviewRouter';
+import userOrderRouter from './routes/user/orderRouter';
+import userContactRouter from './routes/user/contactRouter';
 
 
 
@@ -36,12 +42,19 @@ server.use("/public/images", express.static(path.join(__dirname, 'public', 'imag
 /*====================> || ADMIN API || <====================*/
 server.use('/api/admin', adminRouter);
 server.use('/api/admin', productRouter);
+server.use('/api/admin', adminreviewRouter);
+server.use('/api/admin', adminreviewRouter);
+server.use('/api/admin', adminorderRouter);
 
 
-/*====================> || ADMIN API || <====================*/
+/*====================> || USER API || <====================*/
 server.use('/api/user', userRouter);
 server.use('/api/user', userProductRouter);
 server.use('/api/user', userCartRouter);
+server.use('/api/user', userWhishlistRouter)
+server.use('/api/user', userReviewRouter)
+server.use('/api/user', userOrderRouter)
+server.use('/api/user', userContactRouter)
 
 
 // DATABASE CONNECTION  

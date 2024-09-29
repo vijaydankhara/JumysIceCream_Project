@@ -1,6 +1,6 @@
 import { Request, Response, response } from "express";
 import jwt from "jsonwebtoken";
-import ProductModel from "../../schemas/admin/productSchema";
+import ProductModel from "../../schemas/productSchema";
 
 // ADD NEW PRODUCT
 export const addNewProduct = async (req: Request, res: Response) => {
