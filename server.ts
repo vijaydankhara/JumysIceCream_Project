@@ -13,7 +13,7 @@ import productRouter from './routes/admin/productRouter';
 // User Router
 import userRouter from './routes/user/userRouter';
 import userProductRouter from './routes/user/productRouter';
-
+import userCartRouter from './routes/user/cartRouter';
 
 
 
@@ -41,7 +41,7 @@ server.use('/api/admin', productRouter);
 /*====================> || ADMIN API || <====================*/
 server.use('/api/user', userRouter);
 server.use('/api/user', userProductRouter);
-
+server.use('/api/user', userCartRouter);
 
 
 // DATABASE CONNECTION  

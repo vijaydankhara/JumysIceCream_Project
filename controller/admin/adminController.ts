@@ -46,11 +46,11 @@ export const registerAdmin = async (request: Request, response: Response) => {
 export const loginAdmin = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-    console.log("Body Data ====>",req.body);
+    // console.log("Body Data ====>",req.body);
     
     // Find admin by email
     let admin = await UserModel.findOne({ email: email, isAdmin: true });
-    console.log("Admin Is Find ======>",admin);
+    // console.log("Admin Is Find ======>",admin);
     
     // Check if admin exists
     if (!admin) {
