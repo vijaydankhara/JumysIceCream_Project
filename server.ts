@@ -6,24 +6,14 @@ import morgan from 'morgan';
 // npm install --save-dev @types/cors
 
 // Admin Router
-import adminRouter from './routes/admin/adminRouter';
-import productRouter from './routes/admin/productRouter';
-import adminreviewRouter from './routes/admin/reviewRouter';
-import adminorderRouter from './routes/admin/orderRouter';
-
+import adminRoutes from './routes/admin/index';
 
 // User Router
-import userRouter from './routes/user/userRouter';
-import userProductRouter from './routes/user/productRouter';
-import userCartRouter from './routes/user/cartRouter';
-import userWhishlistRouter from './routes/user/wishlistRouter';
-import userReviewRouter from './routes/user/reviewRouter';
-import userOrderRouter from './routes/user/orderRouter';
-import userContactRouter from './routes/user/contactRouter';
-
+import userRouters from './routes/user/index';
 
 
 import path from 'path';
+import authRoutes from './routes/auth/auth';
 
 dotenv.config();
 const server = express();
@@ -32,43 +22,36 @@ const dbURL = process.env.MONGO_DB_URL || 'your-default-db-url';
 
 // CORS configuration
 server.use(cors({
-    credentials: true 
+  credentials: true
 }));
 
 server.use(morgan('tiny'));
 server.use(express.json());
 server.use("/public/images", express.static(path.join(__dirname, 'public', 'images')));
 
+/*====================> || AUTH API || <====================*/
+server.use('/api/auth', authRoutes);
+
 /*====================> || ADMIN API || <====================*/
-server.use('/api/admin', adminRouter);
-server.use('/api/admin', productRouter);
-server.use('/api/admin', adminreviewRouter);
-server.use('/api/admin', adminreviewRouter);
-server.use('/api/admin', adminorderRouter);
+server.use('/api/admin', adminRoutes);
 
 
 /*====================> || USER API || <====================*/
-server.use('/api/user', userRouter);
-server.use('/api/user', userProductRouter);
-server.use('/api/user', userCartRouter);
-server.use('/api/user', userWhishlistRouter)
-server.use('/api/user', userReviewRouter)
-server.use('/api/user', userOrderRouter)
-server.use('/api/user', userContactRouter)
+server.use('/api/user', userRouters);
+
 
 
 // DATABASE CONNECTION  
 server.listen(port, async () => {
-    try {
-      await mongoose.connect(dbURL);
-      console.log('DB is Connected ✔︎✔︎✔︎');
-      console.log(`Server started at http://localhost:${port} ✔︎✔︎✔︎`);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error('DB connection error:', error.message);
-      } else {
-        console.error('DB connection error:', error);
-      }
+  try {
+    await mongoose.connect(dbURL);
+    console.log('DB is Connected ✔︎✔︎✔︎');
+    console.log(`Server started at http://localhost:${port} ✔︎✔︎✔︎`);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error('DB connection error:', error.message);
+    } else {
+      console.error('DB connection error:', error);
     }
-  });
-  
+  }
+});

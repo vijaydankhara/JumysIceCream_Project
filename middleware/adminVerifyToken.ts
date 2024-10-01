@@ -25,18 +25,15 @@ export const adminVerifyToken = async (
       return res.status(401).json({ message: "Invalid Authorization" });
     }
     const token = authorization.split(" ")[1];
-    console.log("Token is Backend side ===>",token);
     
     if (!token) {
       return res.status(401).json({ message: "Unauthorized" });
     }
     const payLoad: any = jwt.verify(token, process.env.SECRETE_KEY as string);
-    console.log("payload ===> ",payLoad);
     
     const adminId = payLoad.adminId;
-    console.log("admin id ==> ",adminId);
+    
     const user = await UserModel.findOne({_id: adminId, isAdmin: true, isDelete: false});
-    console.log("Req adminId ==> ",user);
 
     if (user) {
       req.admin = user;

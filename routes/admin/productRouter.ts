@@ -9,7 +9,7 @@ productRouter.post("/add-New-Product",adminVerifyToken,upload.array("productImag
 productController.addNewProduct);
 
 // GET ALL PRODUCT
-productRouter.get("/get-All-Product",adminVerifyToken,productController.getAllProduct);
+productRouter.get("/get-All-Product",productController.getAllProduct);
 
 // UPDATE  PRODUCT
 productRouter.put("/update-Product",adminVerifyToken,productController.updateProduct);

@@ -6,7 +6,7 @@ import { IUser } from "../../models/IUser";
 
 
 // REGISTER User
-export const registerAdmin = async (request: Request, response: Response) => {
+export const registerUser = async (request: Request, response: Response) => {
   try {
     const { firstName, lastName, gender, email, password, mobileNo, dateOfBirth } =
       request.body;
@@ -43,8 +43,45 @@ export const registerAdmin = async (request: Request, response: Response) => {
   }
 };
 
+// REGISTER ADMIN
+export const registerAdmin = async (request: Request, response: Response) => {
+  try {
+    const { firstName, lastName, gender, email, password, mobileNo, dateOfBirth } =
+      request.body;
+    // Validate if all fields are provided
+    if (!firstName || !lastName || !gender || !email || !password || !mobileNo || !dateOfBirth) {
+      return response.status(400).json({ message: "All fields are required." });
+    }
+    // Check if admin already exists
+    let adminobj = await UserModel.findOne({ email: email }) as IUser;
+    if (adminobj) {
+      return response.status(409).json({ message: "Admin already exists." });
+    }
+    // Hash password
+    const salt = await bcrypt.genSalt(11);
+    const hashPassword = await bcrypt.hash(password, salt);
+
+    // Create new admin
+    let newAdmin: IUser = {
+      firstName: firstName,
+      email: email,
+      lastName: lastName,
+      dateOfBirth: dateOfBirth,
+      gender: gender,
+      mobileNo: mobileNo,
+      password: hashPassword,
+      isAdmin: true
+    };
+    adminobj = await UserModel.create(newAdmin) as IUser;
+    return response.status(201).json({ message: "Registered successfully.", adminobj });
+  } catch (error) {
+    console.log(error);
+    return response.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
 // LOGIN USER
-export const loginAdmin = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
     console.log("Body Data ====>",req.body);
